@@ -1,12 +1,20 @@
 extern crate minifb;
 
 use minifb::{Key, Window, WindowOptions};
+pub mod math;
+use math::raymath::Vector3;
 
 const WIDTH: usize = 640;
 const HEIGHT: usize = 360;
 
 fn main() {
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
+
+    let test_vector: Vector3 = Vector3::new(5.0, 2.0, 1.0);
+    let test_vector_two: Vector3 = Vector3::new(3.0, 2.0, 1.0);
+
+    let test = test_vector + test_vector_two;
+    println!("Output: {}", &test);
 
     let mut window = Window::new(
         "Test - ESC to exit",
