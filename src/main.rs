@@ -13,7 +13,9 @@ fn main() {
     let test_vector: Vector3 = Vector3::new(5.0, 2.0, 1.0);
     let test_vector_two: Vector3 = Vector3::new(3.0, 2.0, 1.0);
 
-    let test = test_vector + test_vector_two;
+    let mut test = test_vector + test_vector_two;
+    println!("Output: {}", &test);
+    test = test * 10.0;
     println!("Output: {}", &test);
 
     let mut window = Window::new(

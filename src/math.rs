@@ -1,5 +1,8 @@
 pub mod raymath {
-    use std::{fmt::{Display, self}, ops::*};
+    use std::{
+        fmt::{self, Display},
+        ops::*,
+    };
 
     pub struct Vector3 {
         x: f32,
@@ -69,18 +72,26 @@ pub mod raymath {
             }
         }
     }
-    // pub fn mul(self, other: f32) -> Self {
-    //     Vector3 {
-    //         x: self.x * other,
-    //         y: self.y * other,
-    //         z: self.z * other,
-    //     }
-    // }
-    // pub fn div(self, other: f32) -> Self {
-    //     Vector3 {
-    //         x: self.x / other,
-    //         y: self.y / other,
-    //         z: self.z / other,
-    //     }
-    // }
+
+    impl Mul<f32> for Vector3 {
+        type Output = Self;
+        fn mul(self, other: f32) -> Self {
+            Vector3 {
+                x: self.x * other,
+                y: self.y * other,
+                z: self.z * other,
+            }
+        }
+    }
+
+    impl Div<f32> for Vector3 {
+        type Output = Self;
+        fn div(self, other: f32) -> Self {
+            Vector3 {
+                x: self.x / other,
+                y: self.y / other,
+                z: self.z / other,
+            }
+        }
+    }
 }
