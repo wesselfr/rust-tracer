@@ -1,8 +1,8 @@
 extern crate minifb;
 
 use minifb::{Key, Window, WindowOptions};
-pub mod math;
-use math::raymath::Vector3;
+pub mod raymath;
+pub use raymath::{Vector3, Ray};
 
 const WIDTH: usize = 640;
 const HEIGHT: usize = 360;
