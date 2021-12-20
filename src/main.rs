@@ -8,8 +8,8 @@ pub use raymath::{Ray, Vector3};
 pub mod raytracer;
 pub use raytracer::*;
 
-const WIDTH: usize = 640;
-const HEIGHT: usize = 360;
+const WIDTH: usize = 512;
+const HEIGHT: usize = 512;
 
 fn main() {
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
@@ -23,7 +23,7 @@ fn main() {
     println!("Output: {}", &test);
 
     let cam = Camera::new();
-    let sphere = Sphere::new(Vector3::new(0.0, 2.0, 8.0), 8.0);
+    let sphere = Sphere::new(Vector3::new(0.0, 2.0, 4.0), 2.0);
 
     let mut window = Window::new(
         "Test - ESC to exit",
@@ -39,20 +39,19 @@ fn main() {
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
-        // for i in buffer.iter_mut() {
-        //     *i = 40; // write something more funny here!
-        // }
+        for x in 0..WIDTH-1 {
+            for y in 0..HEIGHT-1 {
+                let uv_x:f32 = (x as f32) / (WIDTH as f32);
+                let uv_y:f32 = (y as f32) / (HEIGHT as f32);
+                let ray = cam.construct_ray(uv_x, uv_y);
 
-        println!("Render start");
-        for x in 0..WIDTH {
-            for y in 0..HEIGHT {
-                let ray = cam.construct_ray(x as f32, y as f32);
+                // Background colour.
+                buffer[y * WIDTH + x] = 40;
                 if sphere.intersect(ray) {
-                    buffer[x * WIDTH + y] = 40;
+                    buffer[y * WIDTH + x] = 0xff0000;
                 }
             }
         }
-        println!("Render done");
 
         // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
