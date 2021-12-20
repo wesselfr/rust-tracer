@@ -3,6 +3,7 @@ use std::{
     ops::*,
 };
 
+#[derive(Copy, Clone)]
 pub struct Vector3 {
     x: f32,
     y: f32,
@@ -12,6 +13,20 @@ pub struct Vector3 {
 impl Vector3 {
     pub fn new(x: f32, y: f32, z: f32) -> Vector3 {
         Vector3 { x, y, z }
+    }
+    pub fn zero() -> Vector3 {
+        Vector3 {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        }
+    }
+    pub fn one() -> Vector3 {
+        Vector3 {
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+        }
     }
 
     // Math helper functions.

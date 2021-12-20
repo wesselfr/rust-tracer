@@ -1,9 +1,9 @@
 use crate::Vector3;
 
 pub struct Ray {
-    origin: Vector3,
-    direction: Vector3,
-    t: f32,
+    pub origin: Vector3,
+    pub direction: Vector3,
+    pub t: f32,
 }
 
 impl Ray {
