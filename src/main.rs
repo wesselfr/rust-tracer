@@ -16,7 +16,11 @@ fn main() {
     //let sphere = Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0);
 
     let mut world: World = World::new();
-    world.objects.push(Box::new(Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0)));
+    for i in 0..5{
+        for j in 0..5{
+        world.objects.push(Box::new(Sphere::new(Vec3A::new(i as f32 * 6.0, 2.0, j as f32 * 6.0), 2.0)));
+        }
+    }
 
     let mut window = Window::new(
         "Test - ESC to exit",
