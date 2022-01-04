@@ -1,20 +1,20 @@
 use crate::Ray;
-use crate::Vector3;
+use glam::Vec3A;
 
 pub struct Sphere {
-    pub position: Vector3,
+    pub position: Vec3A,
     pub radius: f32,
 }
 
 impl Sphere {
-    pub fn new(position: Vector3, radius: f32) -> Sphere {
+    pub fn new(position: Vec3A, radius: f32) -> Sphere {
         Sphere { position, radius }
     }
-    pub fn intersect(&self, mut ray: Ray) -> bool {
+    pub fn intersect(&self, ray: &mut Ray) -> bool {
         let w = self.position - ray.origin;
-        let proj = w.dot(&ray.direction);
+        let proj = w.dot(ray.direction);
         let q = w - ray.direction * proj;
-        let psq = q.dot(&q);
+        let psq = q.dot(q);
         let rsq = self.radius * self.radius;
 
         if psq > rsq || proj < 0.0 {
@@ -37,5 +37,8 @@ impl Sphere {
         }
 
         false
+    }
+    pub fn get_normal(&self,point: Vec3A) -> Vec3A{
+        (point - self.position) / self.radius
     }
 }
