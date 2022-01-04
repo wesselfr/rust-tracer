@@ -13,7 +13,10 @@ fn main() {
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
 
     let mut cam = Camera::new();
-    let sphere = Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0);
+    //let sphere = Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0);
+
+    let mut world: World = World::new();
+    world.objects.push(Box::new(Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0)));
 
     let mut window = Window::new(
         "Test - ESC to exit",
@@ -58,10 +61,17 @@ fn main() {
 
                 // Background colour.
                 //buffer[y * WIDTH + x] = 40;
-                if sphere.intersect(&mut ray) {
-                    let normal = sphere.get_normal(ray.get_point());
 
-                    let col = Color::new(normal.x, normal.y, normal.z);
+                let mut result = HitResult::no_hit();
+                for object in &world.objects{
+                    let r = object.intersect(&ray);
+                    if r.ray_hit && r.distance < result.distance{
+                        result = r;
+                    }
+                }
+
+                if result.ray_hit{
+                    let col = Color::new(result.normal.x, result.normal.y, result.normal.z);
                     buffer[y * WIDTH + x] = col.to_u32();
                 }
                 else{

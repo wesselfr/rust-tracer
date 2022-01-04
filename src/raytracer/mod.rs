@@ -4,6 +4,9 @@ mod ray;
 pub use self::color::Color;
 mod color;
 
+pub use self::world::*;
+mod world;
+
 pub use self::sphere::Sphere;
 mod sphere;
 
