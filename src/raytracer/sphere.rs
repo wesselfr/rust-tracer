@@ -14,12 +14,12 @@ impl Sphere {
     pub fn new(position: Vec3A, radius: f32) -> Sphere {
         Sphere { position, radius }
     }
-    pub fn get_normal(&self,point: Vec3A) -> Vec3A{
+    pub fn get_normal(&self, point: Vec3A) -> Vec3A {
         (point - self.position) / self.radius
     }
 }
 
-impl RayIntersection for Sphere{
+impl RayIntersection for Sphere {
     fn intersect(&self, ray: &Ray) -> HitResult {
         let mut result: HitResult = HitResult::no_hit();
         let w = self.position - ray.origin;

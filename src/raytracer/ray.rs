@@ -14,7 +14,7 @@ impl Ray {
             t: f32::INFINITY,
         }
     }
-    pub fn get_point(self) -> Vec3A{
+    pub fn get_point(self) -> Vec3A {
         self.origin + self.direction * self.t
     }
 }
