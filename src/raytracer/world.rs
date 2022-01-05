@@ -35,5 +35,7 @@ impl World {
             objects: Vec::new(),
         }
     }
-    //pub fn add_object()
+    pub fn add_object(&mut self, object: Box<dyn RayIntersection>) {
+        self.objects.push(object);
+    }
 }

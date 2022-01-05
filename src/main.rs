@@ -9,11 +9,12 @@ pub use raytracer::*;
 const WIDTH: usize = 640;
 const HEIGHT: usize = 640;
 
+const MAX_DEPTH: u32 = 3;
+
 fn main() {
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
 
     let mut cam = Camera::new();
-    //let sphere = Sphere::new(Vec3A::new(0.0, 2.0, 6.0), 2.0);
 
     let mut world: World = World::new();
     for i in 0..3 {
@@ -74,25 +75,7 @@ fn main() {
                 let uv_x: f32 = (x as f32) / (WIDTH as f32);
                 let uv_y: f32 = (y as f32) / (HEIGHT as f32);
                 let ray = cam.construct_ray(uv_x, uv_y);
-
-                let mut result = HitResult::no_hit();
-                for object in &world.objects {
-                    let r = object.intersect(&ray);
-                    if r.ray_hit && r.distance < result.distance {
-                        result = r;
-                    }
-                }
-
-                if result.ray_hit {
-                    let col = Color::new(result.normal.x, result.normal.y, result.normal.z);
-                    buffer[y * WIDTH + x] = col.to_u32();
-                } else {
-                    let view_normal = cam.view_direction.normalize();
-                    let t = 0.5 * (view_normal.y + 1.0);
-                    let color =
-                        Color::new(1.0, 1.0, 1.0) * (1.0 - t) + Color::new(0.5, 0.7, 1.0) * t;
-                    buffer[y * WIDTH + x] = color.to_u32();
-                }
+                buffer[y * WIDTH + x] = trace(&ray, &world, 0).to_u32();
             }
         }
 
@@ -111,5 +94,28 @@ fn main() {
             passed_frames = 0;
             passed_time = 0.0;
         }
+    }
+}
+
+fn trace(ray: &Ray, world: &World, depth: u32) -> Color {
+    let mut result = HitResult::no_hit();
+    if depth < MAX_DEPTH {
+        for object in &world.objects {
+            let r = object.intersect(&ray);
+            if r.ray_hit && r.distance < result.distance {
+                result = r;
+            }
+        }
+    }
+
+    if result.ray_hit {
+        let bounce_ray = Ray::new(result.position + result.normal * 0.001, result.normal);
+        let reflect = trace(&bounce_ray, world, depth + 1);
+        return reflect * 0.8 + Color::new(1.0, 0.0, 0.0) * 0.2;
+        //return Color::new(result.normal.x, result.normal.y, result.normal.z);
+    } else {
+        let view_normal = ray.direction.normalize();
+        let t = 0.5 * (view_normal.y + 1.0);
+        return Color::new(1.0, 1.0, 1.0) * (1.0 - t) + Color::new(0.5, 0.7, 1.0) * t;
     }
 }
