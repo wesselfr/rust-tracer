@@ -1,5 +1,6 @@
 use std::ops::*;
 
+#[derive(Clone, Copy)]
 pub struct Color {
     pub r: f32,
     pub g: f32,
@@ -30,6 +31,16 @@ impl Add for Color {
     }
 }
 
+impl AddAssign for Color {
+    fn add_assign(&mut self, other: Self) {
+        *self = Self {
+            r: self.r + other.r,
+            g: self.g + other.g,
+            b: self.b + other.b,
+        };
+    }
+}
+
 impl Mul<f32> for Color {
     type Output = Self;
     fn mul(self, other: f32) -> Self {
@@ -37,6 +48,17 @@ impl Mul<f32> for Color {
             r: self.r * other,
             g: self.g * other,
             b: self.b * other,
+        }
+    }
+}
+
+impl Div<f32> for Color {
+    type Output = Self;
+    fn div(self, other: f32) -> Self {
+        Color {
+            r: self.r / other,
+            g: self.g / other,
+            b: self.b / other,
         }
     }
 }
