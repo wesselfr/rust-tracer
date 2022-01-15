@@ -1,3 +1,4 @@
+use crate::Color;
 use crate::Material;
 use crate::Ray;
 use crate::World;
@@ -14,11 +15,11 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(position: Vec3A, radius: f32) -> Sphere {
+    pub fn new(position: Vec3A, radius: f32, color: Color) -> Sphere {
         Sphere {
             position,
             radius,
-            material: Box::new(Lambert::new(0.8, 0.0, 0.0)),
+            material: Box::new(Lambert::new(color)),
         }
     }
     pub fn get_normal(&self, point: Vec3A) -> Vec3A {

@@ -15,9 +15,9 @@ pub struct Lambert {
 }
 
 impl Lambert {
-    pub fn new(r: f32, g: f32, b: f32) -> Lambert {
+    pub fn new(color: Color) -> Lambert {
         Lambert {
-            albedo: Color::new(r, g, b),
+            albedo: color,
         }
     }
 }
