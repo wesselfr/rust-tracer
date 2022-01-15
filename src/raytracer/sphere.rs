@@ -1,18 +1,25 @@
+use crate::Material;
 use crate::Ray;
 use crate::World;
 use glam::Vec3A;
 
+use super::material::Lambert;
 use super::world::HitResult;
 use super::world::RayIntersection;
 
 pub struct Sphere {
     pub position: Vec3A,
     pub radius: f32,
+    pub material: Box<dyn Material>,
 }
 
 impl Sphere {
     pub fn new(position: Vec3A, radius: f32) -> Sphere {
-        Sphere { position, radius }
+        Sphere {
+            position,
+            radius,
+            material: Box::new(Lambert::new(0.8, 0.0, 0.0)),
+        }
     }
     pub fn get_normal(&self, point: Vec3A) -> Vec3A {
         (point - self.position) / self.radius
@@ -43,6 +50,7 @@ impl RayIntersection for Sphere {
             result.distance = t0;
             result.position = ray.origin + ray.direction * t0;
             result.normal = self.get_normal(result.position);
+            result.material = Some(self.get_material());
             return result;
         }
         // Ray inside sphere test.
@@ -51,10 +59,15 @@ impl RayIntersection for Sphere {
             result.distance = t1;
             result.position = ray.origin + ray.direction * t1;
             result.normal = self.get_normal(result.position);
+            result.material = Some(self.get_material());
             return result;
         }
 
         // Ray did not hit, return no_hit result.
         result
+    }
+
+    fn get_material(&self) -> &Box<dyn Material> {
+        &self.material
     }
 }

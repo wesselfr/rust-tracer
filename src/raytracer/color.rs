@@ -41,6 +41,17 @@ impl AddAssign for Color {
     }
 }
 
+impl Mul<Color> for Color {
+    type Output = Self;
+    fn mul(self, other: Color) -> Self {
+        Color {
+            r: self.r * other.r,
+            g: self.g * other.g,
+            b: self.b * other.b,
+        }
+    }
+}
+
 impl Mul<f32> for Color {
     type Output = Self;
     fn mul(self, other: f32) -> Self {
@@ -48,6 +59,17 @@ impl Mul<f32> for Color {
             r: self.r * other,
             g: self.g * other,
             b: self.b * other,
+        }
+    }
+}
+
+impl Div<Color> for Color {
+    type Output = Self;
+    fn div(self, other: Color) -> Self {
+        Color {
+            r: self.r / other.r,
+            g: self.g / other.g,
+            b: self.b / other.b,
         }
     }
 }

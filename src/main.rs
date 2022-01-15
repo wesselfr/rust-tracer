@@ -9,8 +9,6 @@ pub use raytracer::*;
 const WIDTH: usize = 640;
 const HEIGHT: usize = 640;
 
-const MAX_DEPTH: u32 = 3;
-
 fn main() {
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
     let mut accumilator: Vec<Color> = vec![Color::new(0.0, 0.0, 0.0); WIDTH * HEIGHT];
@@ -134,36 +132,6 @@ fn main() {
             passed_frames = 0;
             passed_time = 0.0;
         }
-    }
-}
-
-fn trace(ray: &Ray, world: &World, depth: u32) -> Color {
-    let mut result = HitResult::no_hit();
-    if depth < MAX_DEPTH {
-        for object in &world.objects {
-            let r = object.intersect(&ray);
-            if r.ray_hit && r.distance < result.distance {
-                result = r;
-            }
-        }
-    } else {
-        return Color::new(0.001, 0.001, 0.001);
-    }
-
-    if result.ray_hit {
-        let reflect_ray = Ray::new(result.position + result.normal * 0.001, result.normal);
-        let reflect = trace(&reflect_ray, world, depth + 1);
-        let mut scatter_ray = Ray::new(result.position + result.normal * 0.001, result.normal);
-        scatter_ray.randomize_direction_unit_sphere();
-        let scatter = trace(&scatter_ray, world, depth + 1);
-
-        //return scatter * 0.2 + reflect * 0.2 + Color::new(0.8, 0.0, 0.0) * 0.6;
-        return (scatter * 0.8 + reflect * 0.2) * 0.5;
-        //return Color::new(result.normal.x, result.normal.y, result.normal.z);
-    } else {
-        let view_normal = ray.direction.normalize();
-        let t = 0.5 * (view_normal.y + 1.0);
-        return Color::new(1.0, 1.0, 1.0) * (1.0 - t) + Color::new(0.5, 0.7, 1.0) * t;
     }
 }
 

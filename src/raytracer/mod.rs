@@ -4,6 +4,12 @@ mod ray;
 pub use self::color::Color;
 mod color;
 
+pub use self::material::Material;
+mod material;
+
+pub use self::trace::*;
+mod trace;
+
 pub use self::world::*;
 mod world;
 
