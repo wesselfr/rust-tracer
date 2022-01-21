@@ -21,14 +21,20 @@ fn main() {
             world.objects.push(Box::new(Sphere::new(
                 Vec3A::new(i as f32 * 6.0, 2.0, j as f32 * 6.0),
                 2.0,
-                Color::new(1.0 - i as f32 * 0.3, 0.0, 1.0 - j as f32 * 0.3),
+                Box::new(Lambert::new(Color::new(
+                    1.0 - i as f32 * 0.3,
+                    0.0,
+                    1.0 - j as f32 * 0.3,
+                ))),
             )));
         }
     }
 
-    world
-        .objects
-        .push(Box::new(Sphere::new(Vec3A::new(5.0, -100.0, 5.0), 100.0, Color::new(0.6, 0.6, 0.6))));
+    world.objects.push(Box::new(Sphere::new(
+        Vec3A::new(5.0, -100.0, 5.0),
+        100.0,
+        Box::new(ScatterOnlyMaterial::new(Color::new(0.9, 0.9, 0.9))),
+    )));
 
     let mut window = Window::new(
         "Rust-tracer - ESC to exit",

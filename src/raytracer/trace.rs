@@ -1,6 +1,6 @@
 use crate::{Color, HitResult, Ray, World};
 
-const MAX_DEPTH: u32 = 3;
+const MAX_DEPTH: u32 = 10;
 
 pub fn trace(ray: &Ray, world: &World, depth: u32) -> Color {
     let mut result = HitResult::no_hit();
@@ -17,10 +17,7 @@ pub fn trace(ray: &Ray, world: &World, depth: u32) -> Color {
 
     if result.ray_hit {
         let material = result.material.expect("No material found..");
-        let reflect = material.reflect(ray, &result, world, depth);
-        let scatter = material.scatter(ray, &result, world, depth);
-
-        return (scatter * 0.4 + reflect * 0.6) * material.get_color();
+        return material.shade(ray, &result, world, depth);
     } else {
         let view_normal = ray.direction.normalize();
         let t = 0.5 * (view_normal.y + 1.0);

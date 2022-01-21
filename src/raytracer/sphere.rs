@@ -1,12 +1,10 @@
+use super::world::HitResult;
+use super::world::RayIntersection;
 use crate::Color;
 use crate::Material;
 use crate::Ray;
 use crate::World;
 use glam::Vec3A;
-
-use super::material::Lambert;
-use super::world::HitResult;
-use super::world::RayIntersection;
 
 pub struct Sphere {
     pub position: Vec3A,
@@ -15,11 +13,11 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(position: Vec3A, radius: f32, color: Color) -> Sphere {
+    pub fn new(position: Vec3A, radius: f32, material: Box<dyn Material>) -> Sphere {
         Sphere {
             position,
             radius,
-            material: Box::new(Lambert::new(color)),
+            material,
         }
     }
     pub fn get_normal(&self, point: Vec3A) -> Vec3A {
